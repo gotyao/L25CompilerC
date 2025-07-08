@@ -1,0 +1,194 @@
+program MapTest {
+  main {
+    output("Starting Map Test Program");
+
+    let map myMap;
+
+    output("--- Test 1: Basic Insertions and Size ---");
+    myMap[10] = 100;
+    myMap[20] = 200;
+    myMap[5] = 50;
+    myMap[15] = 100;
+    myMap.insert(15, 150);
+    output("Map size after 4 insertions: ", myMap.size());
+
+    output("--- Test 2: Retrieval ---");
+    output("myMap[10]: ", myMap[10]);
+    output("myMap[20]: ", myMap[20]);
+    output("myMap[5]: ", myMap[5]);
+    output("myMap[15]: ", myMap[15]);
+
+    output("--- Test 3: Update existing key ---");
+    myMap[10] = 1000;
+    output("myMap[10] after update: ", myMap[10]);
+
+    output("--- Test 4: Find (existence check) ---");
+    output("myMap.find(5): ", myMap.find(5));
+    output("myMap.find(10): ", myMap.find(10));
+    output("myMap.find(25): ", myMap.find(25));
+
+    output("--- Test 5: Value lookup for non-existent key ---");
+    output("myMap[25]: ", myMap[25]);
+
+    output("--- Test 6: Deletion (various cases) ---");
+    output("Initial map for deletion tests size: ", myMap.size());
+    output("Deleting key 10 (node with two children):");
+    myMap.delete(10);
+    output("Map size after deleting 10: ", myMap.size());
+    output("myMap.find(10): ", myMap.find(10));
+    output("myMap[10]: ", myMap[10]);
+
+    output("Deleting key 5 (leaf node):");
+    myMap.delete(5);
+    output("Map size after deleting 5: ", myMap.size());
+    output("myMap.find(5): ", myMap.find(5));
+
+    output("Deleting key 20 (node with one child, 15):");
+    myMap.delete(20);
+    output("Map size after deleting 20: ", myMap.size());
+    output("myMap.find(20): ", myMap.find(20));
+
+    output("Deleting key 15 (the last node):");
+    myMap.delete(15);
+    output("Map size after deleting 15: ", myMap.size());
+    output("myMap.find(15): ", myMap.find(15));
+
+    output("--- Test 7: Operations on an empty map ---");
+    output("Empty map size: ", myMap.size());
+    output("Empty map.find(1): ", myMap.find(1));
+    output("Empty map[1]: ", myMap[1]);
+    myMap.delete(1);
+    output("Empty map size after deleting non-existent key: ", myMap.size());
+
+    output("--- Test 8: Re-insert after full deletion ---");
+    myMap[100] = 1;
+    output("myMap[100]: ", myMap[100]);
+    output("Map size: ", myMap.size());
+    myMap.delete(100);
+    output("Map size after deleting 100: ", myMap.size());
+
+    output("--- Test 9: Complex insertions (to test BST structure) ---");
+    myMap[50] = 500;
+    myMap[25] = 250;
+    myMap[75] = 750;
+    myMap[10] = 100;
+    myMap[35] = 350;
+    myMap[60] = 600;
+    myMap[90] = 900;
+    myMap[5] = 55;
+    myMap[80] = 800;
+    myMap[95] = 950;
+    myMap[1] = 11;
+    myMap[12] = 120;
+    myMap[17] = 170;
+    myMap[20] = 200;
+    myMap[30] = 300;
+    output("Map size after complex insertions: ", myMap.size());
+
+    output("Values after complex insertions:");
+    output("myMap[50]: ", myMap[50]);
+    output("myMap[25]: ", myMap[25]);
+    output("myMap[75]: ", myMap[75]);
+    output("myMap[10]: ", myMap[10]);
+    output("myMap[35]: ", myMap[35]);
+    output("myMap[60]: ", myMap[60]);
+    output("myMap[90]: ", myMap[90]);
+    output("myMap[5]: ", myMap[5]);
+    output("myMap[80]: ", myMap[80]);
+    output("myMap[95]: ", myMap[95]);
+    output("myMap[1]: ", myMap[1]);
+    output("myMap[12]: ", myMap[12]);
+    output("myMap[17]: ", myMap[17]);
+    output("myMap[20]: ", myMap[20]);
+    output("myMap[30]: ", myMap[30]);
+
+    output("--- Test 10: Traversal (should output keys and values in sorted key order) ---");
+    let *traverseptr;
+    traverseptr = myMap.traverse();
+    let currentsize;
+    currentsize = myMap.size();
+    output("Traversing map (Key -> Value pairs):");
+    let i;
+    i = 0;
+    while (i < currentsize * 2) {
+      output(traverseptr[i]);
+      output(" -> ", traverseptr[i + 1]);
+      i = i + 2;
+    };
+
+    output("--- Test 11: More Deletion Scenarios (focused on tree restructuring) ---");
+    output("Deleting key 1 (leaf):");
+    myMap.delete(1);
+    output("Size: ", myMap.size());
+    output("Deleting key 12 (leaf):");
+    myMap.delete(12);
+    output("Size: ", myMap.size());
+    output("Deleting key 10 (node with one child, 17):");
+    myMap.delete(10);
+    output("Size: ", myMap.size());
+    output("myMap.find(10): ", myMap.find(10));
+    output("myMap[17]: ", myMap[17]);
+
+    output("Deleting key 25 (node with two children, 5 and 35):");
+    myMap.delete(25);
+    output("Size: ", myMap.size());
+    output("myMap.find(25): ", myMap.find(25));
+    output("myMap[30]: ", myMap[30]);
+
+    output("Deleting key 50 (current root, has two children):");
+    myMap.delete(50);
+    output("Size: ", myMap.size());
+    output("myMap.find(50): ", myMap.find(50));
+
+    output("--- Test 12: Negative Keys and Zero Key/Value ---");
+    let map negMap;
+    negMap[-10] = -100;
+    negMap[-5] = -50;
+    negMap[-15] = -150;
+    negMap[0] = 0;
+    negMap[-7] = 77;
+    output("NegMap size: ", negMap.size());
+
+    output("NegMap values:");
+    output("negMap[-10]: ", negMap[-10]);
+    output("negMap[-5]: ", negMap[-5]);
+    output("negMap[-15]: ", negMap[-15]);
+    output("negMap[0]: ", negMap[0]);
+    output("negMap[-7]: ", negMap[-7]);
+
+    output("Traversal with negative/zero keys (sorted order):");
+    traverseptr = negMap.traverse();
+    currentsize = negMap.size();
+    i = 0;
+    while (i < currentsize * 2) {
+      output(traverseptr[i]);
+      output(" -> ", traverseptr[i + 1]);
+      i = i + 2;
+    };
+
+    output("Deleting negative key (-10):");
+    negMap.delete(-10);
+    output("NegMap size: ", negMap.size());
+    output("negMap.find(-10): ", negMap.find(-10));
+
+    output("--- Test 13: Chained operations and expressions with map values ---");
+    let map chainedMap;
+    chainedMap[1] = 10;
+    chainedMap[2] = 20;
+    chainedMap[3] = 30;
+    output("Chained map size: ", chainedMap.size());
+
+    chainedMap[4] = chainedMap[1] + chainedMap[2];
+    output("chainedMap[4]: ", chainedMap[4]);
+
+    chainedMap[5] = chainedMap[4] * 2 - chainedMap[3];
+    output("chainedMap[5]: ", chainedMap[5]);
+
+    output("Chained map size after additions: ", chainedMap.size());
+
+    chainedMap.delete(2);
+    output("Chained map size after deleting 2: ", chainedMap.size());
+
+    output("--- All map tests finished ---");
+  }
+}

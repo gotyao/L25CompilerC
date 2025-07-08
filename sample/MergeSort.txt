@@ -1,0 +1,108 @@
+program MergeSort {
+  func merge(*arr, low, mid, high) {
+    let i = low;
+    let j = mid + 1;
+    let k = 0;
+    let Size = high - low + 1;
+    let* tempPtr;
+
+    alloc(tempPtr, Size);
+
+    while (i <= mid) {
+      if (j <= high) {
+        if (arr[i] <= arr[j]) {
+          tempPtr[k] = arr[i];
+          i = i + 1;
+        }
+        else {
+          tempPtr[k] = arr[j];
+          j = j + 1;
+        };
+      }
+      else {
+        tempPtr[k] = arr[i];
+          i = i + 1;
+      };
+      k = k + 1;
+    };
+
+    while (j <= high) {
+      tempPtr[k] = arr[j];
+      j = j + 1;
+      k = k + 1;
+    };
+
+    i = low;
+    k = 0;
+    while (i <= high) {
+        arr[i] = tempPtr[k];
+        i = i + 1;
+        k = k + 1;
+    };
+
+    free(tempPtr);
+    return 0;
+  }
+
+  func mergesort(*arr, low, high) {
+    let mid;
+
+    if (low >= high) {
+      return 0;
+    }
+    else {
+      mid = low + (high - low) / 2;
+      mergesort(arr, low, mid);
+      mergesort(arr, mid + 1, high);
+      merge(arr, low, mid, high);
+
+      return 0;
+    };
+  }
+
+  main {
+    let ARRAYSIZE;
+    let* pArr;
+
+    output("Enter array Size (e.g., 5-10 for small test): ");
+    input(ARRAYSIZE);
+
+    if (ARRAYSIZE <= 0) {
+      output("Array Size must be positive.");
+    }
+    else {
+      alloc(pArr, ARRAYSIZE);
+
+      let i; # 循环变量
+      i = 0;
+      while (i < ARRAYSIZE) {
+        let in = 0;
+        output("Enter element ", i, ": ");
+        input(in);
+        pArr[i] = in;
+        i = i + 1;
+      };
+
+      # 打印原始数组
+      output("Original array: ");
+      i = 0;
+      while (i < ARRAYSIZE) {
+        output(pArr[i]);
+        i = i + 1;
+      };
+      output("");
+
+      mergesort(pArr, 0, ARRAYSIZE - 1);
+
+      output("Sorted array: ");
+      i = 0;
+      while (i < ARRAYSIZE) {
+        output(pArr[i], " ");
+        i = i + 1;
+      };
+      output("");
+
+      free(pArr);
+    };
+  }
+}

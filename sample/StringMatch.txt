@@ -1,0 +1,87 @@
+program StringMatch {
+  # implement a simple string match
+  func strlen (str s) {
+    let len = 0;
+    if (s == 0) {
+      return 0;
+    };
+    while (s[len] != 0) {
+      len = len + 1;
+    };
+    return len;
+  }
+
+  func findSubstring(str text, str pattern) {
+    let n = 0; # Length of text string
+    let m = 0; # Length of pattern string
+    let i = 0;
+    let result = -1;
+    let currentMatch = 0;
+
+    n = strlen(text);
+    m = strlen(pattern);
+
+    # Handle edge cases
+    if (m == 0) {
+      return 0;
+    };
+    if (m > n) {
+      return -1;
+    };
+
+    while (i <= n - m) {
+      let j = 0;
+      currentMatch = 1;
+
+      while (j < m) {
+        if (currentMatch == 1) { # Only compare if no mismatch
+          if (text[i+j] == pattern[j]) {
+            j = j + 1;
+          }
+          else {
+            currentMatch = 0; # Mismatch found
+          };
+        }
+        else {
+          j = m;
+        };
+      };
+
+      if (currentMatch == 1) {
+        result = i;
+        i = n;
+      }
+      else {
+        i = i + 1;
+      };
+    };
+
+    return result;
+  }
+
+  main {
+    let str textInput;
+    let str patternInput;
+    let foundIndex;
+
+    while(1 == 1) {
+      output("Enter the main text string: ");
+      input(textInput);
+      output("Enter the pattern string to find: ");
+      input(patternInput);
+
+      output("Searching for '" + patternInput + "' in '" + textInput + "':");
+      let str modified = patternInput * 3;
+      output("modified: ", modified); # just to test str *
+
+      foundIndex = findSubstring(textInput, patternInput);
+
+      if (foundIndex != -1) {
+        output("Pattern found at index: " + foundIndex);
+      }
+      else {
+        output("Pattern not found in the text.");
+      };
+    };
+  }
+}

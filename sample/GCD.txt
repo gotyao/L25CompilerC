@@ -1,0 +1,27 @@
+program GCD{
+  func gcd(x, y){
+    let f = *x;
+    let g = *y;
+    while(f != g){
+      if(f < g){
+        g = (g - f);
+      };
+      if(g < f){
+        f = f - g ;
+      };
+    };
+    return f;
+  }
+
+  main{
+    let a;
+    let b;
+    input(a, b);
+    let x = a;
+    let y = b;
+    let *px = &x;
+    let *py = &y;
+    gcd(px, py);
+    output(gcd(&x, &y));
+  }
+}

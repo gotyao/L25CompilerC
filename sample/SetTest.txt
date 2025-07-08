@@ -1,0 +1,234 @@
+program SetTest {
+  main {
+    let set mySet;
+    let *arrPtr;
+    let i;
+    let count;
+    let found;
+    let val;
+
+    output("--- SET TEST START ---");
+    output("");
+
+    output("--- Phase 1: Initial State & Basic Inserts ---");
+
+    found = mySet.find(10);
+    output("Initial find(10): ", found);
+    count = mySet.size();
+    output("Initial size: ", count);
+    arrPtr = mySet.traverse();
+    if (arrPtr == 0) {
+      output("Traverse of empty set: Returned null pointer (correct).");
+    }
+    else {
+      output("Traverse of empty set: ERROR - returned non-null pointer.");
+    };
+    output("");
+
+    output("Inserting: 50, 20, 80, 10, 30, 70, 90");
+    mySet.insert(50);
+    mySet.insert(20);
+    mySet.insert(80);
+    mySet.insert(10);
+    mySet.insert(30);
+    mySet.insert(70);
+    mySet.insert(90);
+
+    count = mySet.size();
+    output("Size after 7 inserts: ", count);
+    output("Elements after 7 inserts (should be sorted):");
+    arrPtr = mySet.traverse();
+    if (arrPtr != 0) {
+      i = 0;
+      while (i < count) {
+        let *tmp = arrPtr + i;
+        output("Element ", i, ": ", *tmp);
+        i = i + 1;
+      };
+    }
+    else {
+      output("ERROR: Traverse returned null pointer after inserts.");
+    };
+    output("");
+
+    found = mySet.find(20); output("Find 20 (exists): ", found);
+    found = mySet.find(100); output("Find 100 (non-existent): ", found);
+    found = mySet.find(50); output("Find 50 (root): ", found);
+    output("");
+
+    output("--- Phase 2: Inserting Duplicates and Negatives ---");
+
+    output("Inserting duplicates: 20, 50");
+    mySet.insert(20);
+    mySet.insert(50);
+    count = mySet.size();
+    output("Size after duplicate inserts: ", count);
+
+    output("Inserting negative numbers: -5, -15");
+    mySet.insert(-5);
+    mySet.insert(-15);
+    output("Inserting more positives: 40, 60");
+    mySet.insert(40);
+    mySet.insert(60);
+
+    count = mySet.size();
+    output("Size after mixed inserts: ", count);
+    output("Elements after mixed inserts (should be sorted):");
+    arrPtr = mySet.traverse();
+    if (arrPtr != 0) {
+      i = 0;
+      while (i < count) {
+        let *tmp = arrPtr + i;
+        output("Element ", i, ": ", *tmp);
+        i = i + 1;
+      };
+    }
+    else {
+      output("ERROR: Traverse returned null pointer after mixed inserts.");
+    };
+    output("");
+
+    found = mySet.find(-15); output("Find -15: ", found);
+    found = mySet.find(40);  output("Find 40: ", found);
+    found = mySet.find(25);  output("Find 25 (non-existent): ", found);
+    output("");
+
+    output("--- Phase 3: Deletion Scenarios ---");
+
+    output("Attempting to delete non-existent: 1000");
+    mySet.delete(1000);
+    count = mySet.size();
+    output("Size after deleting 1000: ", count);
+
+    output("Deleting leaf node: 10");
+    mySet.delete(10);
+    count = mySet.size();
+    output("Size after deleting 10: ", count);
+    output("Elements:");
+    arrPtr = mySet.traverse();
+    found = mySet.find(10); output("Find 10: ", found);
+    output("");
+
+    output("Deleting node with one child: 70 (child 60)");
+    mySet.delete(70);
+    count = mySet.size();
+    output("Size after deleting 70: ", count);
+    output("Elements:");
+    arrPtr = mySet.traverse();
+    found = mySet.find(70); output("Find 70: ", found);
+    output("");
+
+    output("Deleting node with two children: 20 (children -5, 30)");
+    mySet.delete(20);
+    count = mySet.size();
+    output("Size after deleting 20: ", count);
+    output("Elements:");
+    arrPtr = mySet.traverse();
+    if (arrPtr != 0) {
+      i = 0;
+      while (i < count) {
+        let tmp = arrPtr[i];
+        output("Element ", i, ": ", tmp);
+        i = i + 1;
+      };
+    };
+    found = mySet.find(20); output("Find 20: ", found);
+    output("");
+
+    output("Deleting root node: 50 (should be replaced by its successor)");
+    mySet.delete(50);
+    count = mySet.size();
+    output("Size after deleting 50: ", count);
+    output("Elements:");
+    arrPtr = mySet.traverse();
+    if (arrPtr != 0) {
+      i = 0;
+      while (i < count) {
+        let tmp = arrPtr[i];
+        output("Element ", i, ": ", tmp);
+        i = i + 1;
+      };
+    };
+    found = mySet.find(50); output("Find 50: ", found);
+    output("");
+
+    output("--- Phase 4: Emptying and Re-populating ---");
+
+    output("Deleting remaining elements to empty the set...");
+    mySet.delete(30);
+    mySet.delete(-5);
+    mySet.delete(-15);
+    mySet.delete(40);
+    mySet.delete(60);
+    mySet.delete(80);
+    mySet.delete(90);
+
+    count = mySet.size();
+    output("Size after emptying: ", count);
+    arrPtr = mySet.traverse();
+    if (arrPtr == 0) {
+      output("Traverse of empty set after deletions: Returned null pointer (correct).");
+    }
+    else {
+      output("Traverse of empty set after deletions: ERROR - returned non-null pointer.");
+    };
+    found = mySet.find(1); output("Find 1 in empty set: ", found);
+    output("");
+
+    output("Re-populating with new values: 10, 20, 30, 5, 15, 25, 35");
+    mySet.insert(20);
+    mySet.insert(10);
+    mySet.insert(30);
+    mySet.insert(5);
+    mySet.insert(15);
+    mySet.insert(25);
+    mySet.insert(35);
+
+    count = mySet.size();
+    output("Size after re-populating: ", count);
+    output("Elements after re-populating:");
+    arrPtr = mySet.traverse();
+    if (arrPtr != 0) {
+      i = 0;
+      while (i < count) {
+        let tmp = arrPtr[i];
+        output("Element ", i, ": ", tmp);
+        i = i + 1;
+      };
+    };
+    output("");
+    found = mySet.find(20); output("Find 20: ", found);
+    found = mySet.find(35); output("Find 35: ", found);
+    output("");
+
+    output("--- Phase 5: Mixed Operations & Final Checks ---");
+    output("Deleting 15, inserting 12, deleting 30, inserting 28, 40");
+    mySet.delete(15);
+    mySet.insert(12);
+    mySet.delete(30);
+    mySet.insert(28);
+    mySet.insert(40);
+
+    count = mySet.size();
+    output("Final size: ", count);
+    output("Final elements:");
+    arrPtr = mySet.traverse();
+    if (arrPtr != 0) {
+      i = 0;
+      while (i < count) {
+        let tmp = arrPtr[i];
+        output("Element ", i, ": ", tmp);
+        i = i + 1;
+      };
+    };
+    output("");
+
+    found = mySet.find(15); output("Find 15: ", found);
+    found = mySet.find(12); output("Find 12: ", found);
+    found = mySet.find(28); output("Find 28: ", found);
+    found = mySet.find(40); output("Find 40: ", found);
+    output("");
+
+    output("--- SET TEST END ---");
+  }
+}

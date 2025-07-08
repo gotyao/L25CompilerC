@@ -1,0 +1,47 @@
+program pointerTest {
+  main{
+    # normal var_p
+    let *ptr1;
+    alloc(ptr1, 1);
+    *ptr1 = 123;
+    output(*ptr1);
+    free(ptr1);
+    output(502);
+   # try free, should have no error
+    free(ptr1);
+    output("finish test 1");
+
+    # alloc test
+    let *ptr2;
+    let *ptr3;
+    alloc(ptr2, 5);
+    *ptr2 = 200;
+    ptr3 = ptr2 + 1;
+    *ptr3 = 100;
+    output(*ptr2);
+    output(*ptr3);
+    output(ptr2[1]);
+    alloc(ptr3, 1);
+    *ptr3 = 300;
+    output(*ptr3);
+    free(ptr2);
+    free(ptr3);
+    free(ptr3);
+    output("finish test 2");
+
+    # dereference test
+    let normalvar = 789;
+    let *ptrtonormalvar;
+    ptrtonormalvar = &normalvar;
+    output(*ptrtonormalvar);
+    *ptrtonormalvar = 987;
+    output(normalvar);
+    output("finish test 3");
+
+    # alloc 0 test
+    let *ptrzerosize;
+    output("should have runtime error in alloc 0");
+    alloc(ptrzerosize, 0);
+    free(ptrzerosize);
+  }
+}
